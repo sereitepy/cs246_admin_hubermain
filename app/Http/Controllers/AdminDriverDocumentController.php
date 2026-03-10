@@ -55,39 +55,60 @@ class AdminDriverDocumentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'driver_id' => 'required|exists:users,id',
-            'document_type' => 'required',
-            'document_file' => 'required|file',
+            'driver_id'                  => 'required|exists:users,id',
+            'driver_license_file'        => 'nullable|file|image',
+            'vehicle_registration_file'  => 'nullable|file|image',
+            'insurance_certificate_file' => 'nullable|file|image',
+            'vehicle_photo_1'            => 'nullable|file|image',
+            'vehicle_photo_2'            => 'nullable|file|image',
+            'vehicle_photo_3'            => 'nullable|file|image',
         ]);
 
-        DriverDocument::create([
-            'user_id' => $request->driver_id,
-            'document_type' => $request->document_type,
-            // Before
-            'document_file' => $request->file('document_file')->store('driver_documents', 'public'),
+        $data = ['user_id' => $request->driver_id];
 
-            // After
-            'document_file' => $request->file('document_file')->store('driver_documents', 'spaces'),        ]);
+        foreach (['driver_license_file', 'vehicle_registration_file', 'insurance_certificate_file', 'vehicle_photo_1', 'vehicle_photo_2', 'vehicle_photo_3'] as $field) {
+            if ($request->hasFile($field)) {
+                $data[$field] = $request->file($field)->store('driver_documents', 'spaces');
+            }
+        }
+
+        DriverDocument::updateOrCreate(['user_id' => $request->driver_id], $data);
 
         return redirect()->route('admin.driver_documents.index')
-            ->with('success', 'Driver document created successfully');
+            ->with('success', 'Driver documents saved successfully');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $document = DriverDocument::findOrFail($id);
+
+        $request->validate([
+            'driver_license_file'        => 'nullable|file|image',
+            'vehicle_registration_file'  => 'nullable|file|image',
+            'insurance_certificate_file' => 'nullable|file|image',
+            'vehicle_photo_1'            => 'nullable|file|image',
+            'vehicle_photo_2'            => 'nullable|file|image',
+            'vehicle_photo_3'            => 'nullable|file|image',
+        ]);
+
+        $data = [];
+
+        foreach (['driver_license_file', 'vehicle_registration_file', 'insurance_certificate_file', 'vehicle_photo_1', 'vehicle_photo_2', 'vehicle_photo_3'] as $field) {
+            if ($request->hasFile($field)) {
+                $data[$field] = $request->file($field)->store('driver_documents', 'spaces');
+            }
+        }
+
+        $document->update($data);
+
+        return redirect()->route('admin.driver_documents.show', $document->user_id)
+            ->with('success', 'Driver documents updated successfully');
     }
 
     public function edit($id)
     {
         $document = DriverDocument::findOrFail($id);
         return view('admin.driver_documents.edit', compact('document'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $document = DriverDocument::findOrFail($id);
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'license_number' => 'required',
-        ]);
-        $document->update($request->all());
-        return redirect()->route('admin.driver_documents.index')->with('success', 'Driver document updated successfully');
     }
 
     public function destroy($id)
