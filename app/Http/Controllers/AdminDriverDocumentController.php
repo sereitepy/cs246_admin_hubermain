@@ -63,8 +63,11 @@ class AdminDriverDocumentController extends Controller
         DriverDocument::create([
             'user_id' => $request->driver_id,
             'document_type' => $request->document_type,
+            // Before
             'document_file' => $request->file('document_file')->store('driver_documents', 'public'),
-        ]);
+
+            // After
+            'document_file' => $request->file('document_file')->store('driver_documents', 'spaces'),        ]);
 
         return redirect()->route('admin.driver_documents.index')
             ->with('success', 'Driver document created successfully');
