@@ -1,66 +1,178 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ride Sharing and Car Pooling Platform
+## 📋 Requirements
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Before you begin, make sure your machine has the following installed:
 
-## About Laravel
+| Tool | Minimum Version | Check with |
+|------|----------------|------------|
+| PHP | 8.1+ | `php -v` |
+| Composer | 2.x | `composer -V` |
+| MySQL / PostgreSQL | — | `mysql --version` |
+| Git | — | `git --version` |
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> 💡 **Not sure if you have these?** Run the "Check with" commands in your terminal. If you get a "command not found" error, you'll need to install that tool first.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ⚙️ Installation
 
-## Learning Laravel
+### 1. Clone the repository
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone https://github.com/sereitepy/cs426_admin_hubermain.git
+cd cs426_admin_hubermain
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 2. Install PHP dependencies
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+```
 
-## Laravel Sponsors
+### 3. Set up your environment file
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+cp .env.example .env
+```
 
-### Premium Partners
+Then open `.env` in a text editor and fill in the credentials below. **Ask the repository owner for these values.**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 🔐 Environment Variables
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Open your `.env` file and update the following sections:
 
-## Code of Conduct
+### Database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=your_database_name     # Ask the repo owner
+DB_USERNAME=your_database_user     # Ask the repo owner
+DB_PASSWORD=your_database_password # Ask the repo owner
+```
 
-## Security Vulnerabilities
+### DigitalOcean Spaces (File Storage)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+All images and files are stored on DigitalOcean Spaces. Ask the repo owner for these credentials:
 
-## License
+```env
+FILESYSTEM_DISK=do_spaces
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+DO_SPACES_KEY=xxxxxxxxxxxxxxxxxxxx       # Ask the repo owner
+DO_SPACES_SECRET=xxxxxxxxxxxxxxxxxxxx    # Ask the repo owner
+DO_SPACES_REGION=sgp1                    # e.g. sgp1, nyc3, ams3
+DO_SPACES_BUCKET=your-bucket-name        # Ask the repo owner
+DO_SPACES_ENDPOINT=https://sgp1.digitaloceanspaces.com
+DO_SPACES_CDN_ENDPOINT=https://your-bucket-name.sgp1.cdn.digitaloceanspaces.com
+```
+
+> 💡 The region and endpoint must match. For example, Singapore = `sgp1`, New York = `nyc3`.
+
+---
+
+## 🛠️ Setup Commands
+
+Run these commands **in order** after filling in your `.env`:
+
+### 4. Generate the application key
+
+```bash
+php artisan key:generate
+```
+
+### 5. Run database migrations
+
+```bash
+php artisan migrate
+```
+
+### 6. Seed the database
+
+```bash
+php artisan db:seed
+```
+
+---
+
+## ▶️ Running the Application
+
+```bash
+php artisan serve
+```
+
+Your app will be available at: **http://127.0.0.1:8000**
+
+> 💡 Keep this terminal window open while you're working. Press `Ctrl + C` to stop the server.
+
+---
+
+## 🔄 Common Commands
+
+| Command | What it does |
+|---------|-------------|
+| `php artisan migrate:fresh --seed` | Wipe and re-run all migrations + seeders |
+| `php artisan cache:clear` | Clear the application cache |
+| `php artisan config:clear` | Clear the config cache (run this after editing `.env`) |
+| `php artisan route:list` | Show all registered routes |
+| `composer dump-autoload` | Rebuild the autoloader after adding new classes |
+
+---
+
+## 🐛 Troubleshooting
+
+**"Class not found" errors**
+```bash
+composer dump-autoload
+```
+
+**Changes to `.env` not taking effect**
+```bash
+php artisan config:clear
+php artisan cache:clear
+```
+
+**Images not showing up**
+- Double-check your DigitalOcean Spaces credentials in `.env`
+- Make sure the region and endpoint values match
+
+**"SQLSTATE" / database connection error**
+- Make sure your database server is running
+- Double-check `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` in `.env`
+
+**Migration errors on re-run**
+```bash
+php artisan migrate:fresh --seed
+```
+⚠️ Warning: this wipes all data. Only use in development.
+
+---
+
+## 📁 Project Structure (Quick Reference)
+
+```
+├── app/            # Core application logic (Models, Controllers, etc.)
+├── database/       # Migrations and seeders
+├── public/         # Publicly accessible files
+├── resources/      # Views, CSS, JS source files
+├── routes/         # Web and API route definitions
+├── storage/        # Logs, cache, uploaded files
+└── .env            # Your local environment config (never commit this!)
+```
+
+---
+
+## 🤝 Contributing
+
+1. Create a new branch: `git checkout -b feature/your-feature-name`
+2. Make your changes and commit: `git commit -m "Add your message"`
+3. Push to your branch: `git push origin feature/your-feature-name`
+4. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
